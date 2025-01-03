@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+</head>
+<body>
+    <h1>URL Shortener</h1>
+    <form id="urlForm">
+        <label for="original_url">Enter URL to shorten:</label>
+        <input type="text" id="original_url" name="original_url" required>
+        <button type="submit">Shorten URL</button>
+    </form>
+
+    <h2>Shortened URL:</h2>
+    <p id="shortUrl"></p>
+
+    <script>
+        // Listen for form submission
+        document.getElementById("urlForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const originalUrl = document.getElementById("original_url").value;
+
+            // Create the request body
+            const requestData = {
+                original_url: originalUrl
+            };
+
+            // Send the data as JSON using fetch
+            fetch("http://localhost:8080/shorten", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the shortened URL
+                if (data.short_url) {
+                    document.getElementById("shortUrl").innerHTML = `<a href="${data.short_url}" target="_blank">${data.short_url}</a>`;
+                } else {
+                    document.getElementById("shortUrl").innerHTML = "Error: " + data.message;
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+    </script>
+</body>
+</html>
