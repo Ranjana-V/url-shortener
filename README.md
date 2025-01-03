@@ -17,4 +17,12 @@ To run this project, you need:
 - A web browser to access the frontend.
 
 ---
+2. Build and run the Go server:
+    ```bash
+    go run main.go
+    ```
 
+3. Open your browser and navigate to:
+    ```arduino
+    http://localhost:8080
+    ```
